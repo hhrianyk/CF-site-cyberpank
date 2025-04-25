@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html id="html-document">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoForesight - Будущее криптоинвестиций</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --neon-blue: #00f7ff;
+            --neon-purple: #bd00ff;
+            --dark-bg: #0a0a1a;
+            --darker-bg: #050510;
+            --card-bg: rgba(15, 15, 35, 0.7);
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
+        }
+        
+        .neon-purple-text {
+            text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple);
+        }
+        
+        .neon-border {
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), inset 0 0 10px var(--neon-blue);
+        }
+        
+        .neon-purple-border {
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 10px var(--neon-purple), inset 0 0 10px var(--neon-purple);
+        }
+        
+        .glow-hover:hover {
+            box-shadow: 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue);
+        }
+        
+        .cyber-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 247, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 247, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 247, 255, 0); }
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .scanline {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scanline::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(0, 247, 255, 0.5);
+            animation: scan 8s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background-image: url('https://media.giphy.com/media/l0HlP3lP1y9JQlqkE/giphy.gif');
+            background-size: cover;
+        }
+        
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+        
+        .token-icon {
+            animation: spin 20s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .terminal-text {
+            font-family: 'Courier New', monospace;
+            color: #00ff41;
+            text-shadow: 0 0 5px #00ff41;
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid var(--neon-blue);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--neon-blue) }
+        }
+        
+        .neon-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .neon-btn:hover {
+            color: white;
+            box-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 30px var(--neon-blue);
+        }
+        
+        .neon-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.4), transparent);
+            transition: all 0.5s;
+        }
+        
+        .neon-btn:hover::before {
+            left: 100%;
+        }
+        
+        .cyber-input {
+            background: rgba(10, 10, 30, 0.7);
+            border: 1px solid var(--neon-blue);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .cyber-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(0, 247, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 247, 255, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .flicker {
+            animation: flicker 5s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 1;
+            }
+            20%, 22%, 24%, 55% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+    <!-- Matrix background animation -->
+    <div class="matrix-bg"></div>
+    
+    <!-- Floating crypto elements -->
+    <div class="fixed top-20 left-10 w-16 h-16 rounded-full bg-purple-500 opacity-20 floating" style="animation-delay: 0s;"></div>
+    <div class="fixed top-1/3 right-20 w-24 h-24 rounded-full bg-blue-500 opacity-20 floating" style="animation-delay: 1s;"></div>
+    <div class="fixed bottom-1/4 left-1/4 w-20 h-20 rounded-full bg-cyan-500 opacity-20 floating" style="animation-delay: 2s;"></div>
+    <div class="fixed bottom-20 right-1/3 w-12 h-12 rounded-full bg-pink-500 opacity-20 floating" style="animation-delay: 3s;"></div>
+    
+    <!-- Navigation -->
+    <nav class="relative z-50 py-4 px-6 md:px-12 flex justify-between items-center border-b border-gray-800">
+        <div class="flex items-center space-x-2">
+            <img src="https://github.com/tktechdeals/CF/blob/main/CF.png?raw=true" alt="CryptoForesight Logo" class="w-12 h-12">
+            <span class="text-2xl font-orbitron neon-text">CryptoForesight</span>
+        </div>
+        
+        <div class="hidden md:flex space-x-8">
+            <a href="index2.html" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="advantages">Преимущества</a>
+            <a href="index4.html" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="tokens">Токены</a>
+            <a href="index3.html" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="about">О нас</a>
+            <a href="#contact" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="contacts">Контакты</a>
+        </div>
+        
+        <button class="md:hidden text-white">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="relative py-20 px-6 md:px-12 flex flex-col items-center justify-center min-h-screen overflow-hidden">
+        <div class="absolute inset-0 grid-pattern"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-30"></div>
+        
+        <div class="relative z-10 text-center max-w-4xl">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-orbitron mb-6 neon-text flicker">
+                <span class="typewriter" data-i18n="hero_title">ОТКРОЙТЕ КРИПТОВОЗМОЖНОСТИ</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl mb-10 text-gray-300 max-w-3xl mx-auto" data-i18n="hero_description">
+                Узнайте о новых перспективных токенах до их выхода на крупные биржи. Наш экспертный анализ дает вам преимущество для мудрых инвестиций на быстроразвивающемся крипторынке.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#contact" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-orbitron text-white neon-btn glow-hover transition-all duration-300" data-i18n="start_button">
+                    НАЧАТЬ
+                </a>
+                <a href="index2.html" class="px-8 py-3 border border-cyan-400 rounded-full font-orbitron text-white neon-btn glow-hover transition-all duration-300" data-i18n="learn_more">
+                    УЗНАТЬ БОЛЬШЕ
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-0 right-0 flex justify-center">
+            <div class="w-10 h-16 border-2 border-cyan-400 rounded-full flex justify-center">
+                <div class="w-1 h-4 bg-cyan-400 rounded-full animate-bounce"></div>
+            </div>
+        </div>
+        
+        <!-- Animated crypto chart -->
+        <div class="absolute right-10 bottom-20 w-64 h-40 bg-black bg-opacity-50 border border-cyan-400 rounded-lg p-2 hidden lg:block">
+            <img src="https://media.giphy.com/media/YnBntKOgnUSBkV7bQZ/giphy.gif" alt="Crypto chart animation" class="w-full h-full object-cover">
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-6 md:px-12 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-20 z-0"></div>
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-4"><span data-i18n="our_advantages">НАШИ</span> <span class="neon-purple-text">ПРЕИМУЩЕСТВА</span></h2>
+                <div class="w-20 h-1 bg-cyan-400 mx-auto mb-6"></div>
+                <p class="text-gray-300 max-w-3xl mx-auto" data-i18n="advantages_description">
+                    Мы предоставляем эксклюзивную аналитику крипторынка, которая дает вам конкурентное преимущество
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Feature 1 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300 scanline">
+                    <div class="text-cyan-400 text-4xl mb-4">
+                        <i class="fas fa-lock-open"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-3" data-i18n="exclusive_access">Эксклюзивный доступ</h3>
+                    <p class="text-gray-300" data-i18n="exclusive_access_desc">
+                        Получайте информацию о 2-3 токенах, которые будут листингованы на крупных биржах в ближайшие 1-2 месяца раньше других.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300 scanline">
+                    <div class="text-cyan-400 text-4xl mb-4">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-3" data-i18n="professional_analysis">Профессиональный анализ</h3>
+                    <p class="text-gray-300" data-i18n="professional_analysis_desc">
+                        Наша команда тщательно анализирует каждый проект, чтобы вы могли принимать обоснованные инвестиционные решения.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300 scanline">
+                    <div class="text-cyan-400 text-4xl mb-4">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-3" data-i18n="transparency">Максимальная прозрачность</h3>
+                    <p class="text-gray-300" data-i18n="transparency_desc">
+                        Мы гарантируем честность и открытость, предоставляя только проверенные и актуальные данные.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300 scanline">
+                    <div class="text-cyan-400 text-4xl mb-4">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-3" data-i18n="usability">Удобство и надежность</h3>
+                    <p class="text-gray-300" data-i18n="usability_desc">
+                        Работа с нами - это уверенность в ваших инвестициях и комфорт сотрудничества с профессионалами.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Token Showcase -->
+    <section id="tokens" class="py-20 px-6 md:px-12 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-30" style="background: url('https://media.giphy.com/media/3o7TKsrfldhNIOzRdK/giphy.gif') center/cover;"></div>
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-4"><span data-i18n="promising_tokens">ПЕРСПЕКТИВНЫЕ</span> <span class="neon-purple-text">ТОКЕНЫ</span></h2>
+                <div class="w-20 h-1 bg-cyan-400 mx-auto mb-6"></div>
+                <p class="text-gray-300 max-w-3xl mx-auto" data-i18n="tokens_description">
+                    Откройте для себя самые перспективные токены до их выхода на крупные биржи
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- Token 1 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute top-4 right-4 w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center token-icon">
+                        <i class="fas fa-coins text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-3">QUANTUM</h3>
+                    <p class="text-gray-300 mb-4">Протокол нового поколения с квантовой устойчивостью</p>
+                    <div class="flex justify-between text-sm text-gray-400 mb-4">
+                        <span data-i18n="potential_return">Потенциальная доходность:</span>
+                        <span class="text-green-400">5-10x</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-400 mb-4">
+                        <span data-i18n="expected_exchanges">Ожидаемые биржи:</span>
+                        <span>Binance, Coinbase</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-4">
+                        <div class="bg-gradient-to-r from-cyan-500 to-blue-600 h-2 rounded-full" style="width: 85%"></div>
+                    </div>
+                </div>
+                
+                <!-- Token 2 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute top-4 right-4 w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center token-icon">
+                        <i class="fas fa-atom text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-3">NEURAL</h3>
+                    <p class="text-gray-300 mb-4">Децентрализованная сеть на основе ИИ</p>
+                    <div class="flex justify-between text-sm text-gray-400 mb-4">
+                        <span data-i18n="potential_return">Потенциальная доходность:</span>
+                        <span class="text-green-400">8-15x</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-400 mb-4">
+                        <span data-i18n="expected_exchanges">Ожидаемые биржи:</span>
+                        <span>Kraken, FTX</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-4">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-600 h-2 rounded-full" style="width: 72%"></div>
+                    </div>
+                </div>
+                
+                <!-- Token 3 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300 relative overflow-hidden">
+                    <div class="absolute top-4 right-4 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center token-icon">
+                        <i class="fas fa-leaf text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-orbitron mb-3">ECOGEN</h3>
+                    <p class="text-gray-300 mb-4">Устойчивый блокчейн для торговли углеродными кредитами</p>
+                    <div class="flex justify-between text-sm text-gray-400 mb-4">
+                        <span data-i18n="potential_return">Потенциальная доходность:</span>
+                        <span class="text-green-400">3-7x</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-gray-400 mb-4">
+                        <span data-i18n="expected_exchanges">Ожидаемые биржи:</span>
+                        <span>Huobi, KuCoin</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-4">
+                        <div class="bg-gradient-to-r from-green-500 to-teal-600 h-2 rounded-full" style="width: 65%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="py-16 px-6 md:px-12 bg-black bg-opacity-50 relative overflow-hidden">
+        <div class="absolute inset-0" style="background: url('https://media.giphy.com/media/3o7TKrBtk1Q3Qx5U7S/giphy.gif') center/cover; opacity: 0.1;"></div>
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="cyber-card p-6 neon-border">
+                    <div class="text-4xl font-orbitron neon-text mb-2">98%</div>
+                    <div class="text-gray-300">Точность прогнозов</div>
+                </div>
+                <div class="cyber-card p-6 neon-border">
+                    <div class="text-4xl font-orbitron neon-text mb-2">250+</div>
+                    <div class="text-gray-300">Проанализированных токенов</div>
+                </div>
+                <div class="cyber-card p-6 neon-border">
+                    <div class="text-4xl font-orbitron neon-text mb-2">15x</div>
+                    <div class="text-gray-300">Средняя доходность</div>
+                </div>
+                <div class="cyber-card p-6 neon-border">
+                    <div class="text-4xl font-orbitron neon-text mb-2">24/7</div>
+                    <div class="text-gray-300">Мониторинг рынка</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-20 px-6 md:px-12 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-gray-900 to-black opacity-90 z-0"></div>
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2">
+                    <img src="https://media.giphy.com/media/QvGQsgVxrJCne/giphy.gif" alt="Crypto analysis" class="w-full h-auto rounded-lg neon-border">
+                </div>
+                <div class="lg:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-6">ПОЧЕМУ ВЫБИРАЮТ <span class="neon-purple-text">CRYPTOFORESIGHT?</span></h2>
+                    <p class="text-gray-300 mb-6">
+                        В эпоху цифровых технологии и стремительного развития криптовалютного рынка своевременное принятие решений становится ключом к успеху. Мы — команда экспертов по анализу криптовалютного рынка, которые специализируются на поиске и сборе уникальной информации о токенах, готовящихся к листингу на международных биржах.
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <div class="text-cyan-400 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-300">Экспертность: Мы обладаем глубокими знаниями и опытом в сфере криптовалют.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="text-cyan-400 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-300">Актуальность: Постоянно обновляемая информация о новейших тенденциях и возможностях на рынке.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="text-cyan-400 mr-3 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <span class="text-gray-300">Доверие: Наши клиенты знают, что могут рассчитывать на нас в любой ситуации.</span>
+                        </li>
+                    </ul>
+                    <button class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-orbitron text-white neon-btn glow-hover transition-all duration-300">
+                        НАША КОМАНДА
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="py-20 px-6 md:px-12 bg-gradient-to-b from-black to-gray-900 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20" style="background: url('https://media.giphy.com/media/3o7TKsrfldhNIOzRdK/giphy.gif') center/cover;"></div>
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-4">ОТЗЫВЫ <span class="neon-purple-text">КЛИЕНТОВ</span></h2>
+                <div class="w-20 h-1 bg-cyan-400 mx-auto mb-6"></div>
+                <p class="text-gray-300 max-w-3xl mx-auto">
+                    Узнайте, что говорят наши клиенты о своем опыте работы с CryptoForesight
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-cyan-500 flex items-center justify-center mr-4">
+                            <span class="text-xl">ИД</span>
+                        </div>
+                        <div>
+                            <h4 class="font-orbitron">Иван Д.</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "CryptoForesight предоставил мне ранний доступ к токену, который вырос в 10 раз за несколько недель после листинга. Их анализ был точен и помог мне сделать инвестиции, изменившие мою жизнь."
+                    </p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center mr-4">
+                            <span class="text-xl">СМ</span>
+                        </div>
+                        <div>
+                            <h4 class="font-orbitron">Светлана М.</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "Как занятой профессионал, у меня нет времени исследовать все новые проекты. CryptoForesight делает эту сложную работу за меня и предоставляет только самые перспективные возможности."
+                    </p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="cyber-card p-6 neon-border hover:neon-purple-border transition-all duration-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-pink-500 flex items-center justify-center mr-4">
+                            <span class="text-xl">РК</span>
+                        </div>
+                        <div>
+                            <h4 class="font-orbitron">Роман К.</h4>
+                            <div class="flex text-yellow-400 text-sm">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "Я пробовал несколько сервисов криптоанализа, но ни один не сравнится с глубиной и точностью отчетов CryptoForesight. Их команда действительно знает, что делает."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 px-6 md:px-12 bg-gradient-to-r from-cyan-900 to-purple-900 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-30" style="background: url('https://media.giphy.com/media/3o7TKUM3IgJBX2as9O/giphy.gif') center/cover;"></div>
+        <div class="relative z-10 max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-6">ГОТОВЫ <span class="neon-purple-text">ПРЕОБРАЗИТЬ</span> СВОЙ КРИПТОПОРТФЕЛЬ?</h2>
+            <p class="text-gray-300 mb-8">
+                Не тратьте время на самостоятельный поиск и анализ. Доверьтесь профессионалам, которые помогут вам зарабатывать на самых перспективных криптовалютных активах.
+            </p>
+            <a href="#contact" class="px-8 py-4 bg-black bg-opacity-70 border-2 border-cyan-400 rounded-full font-orbitron text-white neon-btn glow-hover transition-all duration-300 text-xl inline-block">
+                НАЧАТЬ УЖЕ СЕГОДНЯ
+            </a>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-6 md:px-12 bg-black relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20" style="background: url('https://media.giphy.com/media/l0HlP3lP1y9JQlqkE/giphy.gif') center/cover;"></div>
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-orbitron neon-text mb-6"><span data-i18n="contact_us">СВЯЖИТЕСЬ</span> <span class="neon-purple-text">С НАМИ</span></h2>
+                    <p class="text-gray-300 mb-8" data-i18n="contact_description">
+                        Есть вопросы или хотите узнать больше о наших услугах? Обратитесь к нашей команде экспертов, готовых помочь вам 24/7.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="text-cyan-400 text-xl mr-4 mt-1">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-orbitron mb-1">Email</h4>
+                                <a href="mailto:cryptoforesight7@gmail.com" class="text-gray-300 hover:text-cyan-400 transition">cryptoforesight7@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-cyan-400 text-xl mr-4 mt-1">
+                                <i class="fas fa-comment-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-orbitron mb-1">Telegram</h4>
+                                <a href="https://t.me/cryptoforesight7" class="text-gray-300 hover:text-cyan-400 transition">@cryptoforesight7</a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="text-cyan-400 text-xl mr-4 mt-1">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-orbitron mb-1" data-i18n="social_media">Мы в соцсетях</h4>
+                                <div class="flex space-x-4">
+                                    <a href="https://t.me/cryptoforesight7" class="text-gray-300 hover:text-cyan-400 transition text-xl" title="Telegram"><i class="fab fa-telegram"></i></a>
+                                    <a href="https://www.tiktok.com/@cryptoforesight7" class="text-gray-300 hover:text-cyan-400 transition text-xl" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                                    <a href="https://www.facebook.com/cryptoforesight7" class="text-gray-300 hover:text-cyan-400 transition text-xl" title="Facebook"><i class="fab fa-facebook"></i></a>
+                                    <a href="https://www.instagram.com/cryptoforesight7" class="text-gray-300 hover:text-cyan-400 transition text-xl" title="Instagram"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://wa.me/60109699805" class="text-gray-300 hover:text-cyan-400 transition text-xl" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                                    <a href="mailto:cryptoforesight7@gmail.com" class="text-gray-300 hover:text-cyan-400 transition text-xl" title="Email"><i class="fas fa-envelope"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="cyber-card p-8 neon-border">
+                        <h3 class="text-xl font-orbitron mb-6" data-i18n="send_message">ОТПРАВЬТЕ НАМ СООБЩЕНИЕ</h3>
+                        <form action="https://formsubmit.co/studa352@gmail.com" method="POST">
+                            <input type="hidden" name="_subject" value="Новое сообщение с сайта CryptoForesight">
+                            <input type="hidden" name="_next" value="https://yoursite.com/thanks.html">
+                            <input type="hidden" name="_captcha" value="false">
+                            <div class="mb-4">
+                                <input type="text" name="name" placeholder="Ваше имя" class="w-full cyber-input px-4 py-3 rounded" required data-i18n-placeholder="your_name">
+                            </div>
+                            <div class="mb-4">
+                                <input type="email" name="email" placeholder="Ваш Email" class="w-full cyber-input px-4 py-3 rounded" required data-i18n-placeholder="your_email">
+                            </div>
+                            <div class="mb-4">
+                                <select name="subject" class="w-full cyber-input px-4 py-3 rounded" required>
+                                    <option value="" data-i18n="subject">Тема</option>
+                                    <option value="Исследование токенов" data-i18n="token_research">Исследование токенов</option>
+                                    <option value="Партнерство" data-i18n="partnership">Партнерство</option>
+                                    <option value="Общий вопрос" data-i18n="general_question">Общий вопрос</option>
+                                </select>
+                            </div>
+                            <div class="mb-6">
+                                <textarea name="message" rows="4" placeholder="Ваше сообщение" class="w-full cyber-input px-4 py-3 rounded" required data-i18n-placeholder="your_message"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-orbitron text-white neon-btn" data-i18n="send">
+                                ОТПРАВИТЬ
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 md:px-12 bg-black bg-opacity-80 border-t border-gray-800 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background: url('https://media.giphy.com/media/3o7TKsrfldhNIOzRdK/giphy.gif') center/cover;"></div>
+        <div class="relative z-10 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex items-center space-x-2 mb-6 md:mb-0">
+                    <img src="https://github.com/tktechdeals/CF/blob/main/CF.png?raw=true" alt="CryptoForesight Logo" class="w-10 h-10">
+                    <span class="text-xl font-orbitron neon-text">CryptoForesight</span>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#features" class="text-gray-400 hover:text-cyan-400 transition" data-i18n="advantages">Преимущества</a>
+                    <a href="#tokens" class="text-gray-400 hover:text-cyan-400 transition" data-i18n="tokens">Токены</a>
+                    <a href="#about" class="text-gray-400 hover:text-cyan-400 transition" data-i18n="about">О нас</a>
+                    <a href="#contact" class="text-gray-400 hover:text-cyan-400 transition" data-i18n="contacts">Контакты</a>
+                    <a href="admin.html" class="text-gray-400 hover:text-cyan-400 transition">Админ</a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 text-center">
+                <div class="flex justify-center space-x-4 mb-4">
+                    <a href="https://t.me/cryptoforesight7" class="text-gray-400 hover:text-cyan-400 transition text-xl" title="Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="https://www.tiktok.com/@cryptoforesight7" class="text-gray-400 hover:text-cyan-400 transition text-xl" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/cryptoforesight7" class="text-gray-400 hover:text-cyan-400 transition text-xl" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/cryptoforesight7" class="text-gray-400 hover:text-cyan-400 transition text-xl" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/60109699805" class="text-gray-400 hover:text-cyan-400 transition text-xl" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:cryptoforesight7@gmail.com" class="text-gray-400 hover:text-cyan-400 transition text-xl" title="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+                <p class="text-gray-500 text-sm" data-i18n="all_rights_reserved">
+                    © 2023 CryptoForesight. Все права защищены. Торговля криптовалютами сопряжена с существенными рисками и подходит не всем инвесторам.
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Floating action button -->
+    <div class="fixed bottom-8 right-8 z-50">
+        <button class="w-14 h-14 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xl neon-btn pulse">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+    </div>
+    
+    <!-- Scripts -->
+    <script>
+        // Floating crypto elements animation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create additional floating elements
+            for (let i = 0; i < 8; i++) {
+                const size = Math.random() * 30 + 10;
+                const colors = ['bg-cyan-500', 'bg-purple-500', 'bg-blue-500', 'bg-pink-500'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 4 + 4;
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                const element = document.createElement('div');
+                element.className = `fixed w-${Math.round(size)} h-${Math.round(size)} rounded-full ${color} opacity-20 floating`;
+                element.style.left = `${left}%`;
+                element.style.top = `${top}%`;
+                element.style.animationDelay = `${delay}s`;
+                element.style.animationDuration = `${duration}s`;
+                
+                document.body.appendChild(element);
+            }
+            
+            // Typewriter effect
+            const typewriter = document.querySelector('.typewriter');
+            setTimeout(() => {
+                typewriter.style.borderRight = 'none';
+            }, 3500);
+            
+            // Animate elements on scroll
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.cyber-card, .neon-border');
+                
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+            
+            // Set initial state
+            document.querySelectorAll('.cyber-card, .neon-border').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.6s ease';
+            });
+            
+            window.addEventListener('scroll', animateOnScroll);
+            animateOnScroll(); // Run once on load
+            
+            // Terminal-like text effect for stats
+            const stats = document.querySelectorAll('.cyber-card.neon-border div:first-child');
+            stats.forEach(stat => {
+                const target = parseInt(stat.textContent.replace(/\D/g, ''));
+                let current = 0;
+                const increment = target / 30;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        clearInterval(timer);
+                        stat.textContent = stat.textContent.replace(/\d+/, target);
+                    } else {
+                        stat.textContent = stat.textContent.replace(/\d+/, Math.floor(current));
+                    }
+                }, 50);
+            });
+        });
+    </script>
+    
+    <!-- Include language scripts -->
+    <script src="languages.js"></script>
+    <script src="language-switcher.js"></script>
+</body>
+</html>

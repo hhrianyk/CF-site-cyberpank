@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoForesight - Административная панель</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --neon-blue: #00f7ff;
+            --neon-purple: #bd00ff;
+            --dark-bg: #0a0a1a;
+            --darker-bg: #050510;
+            --card-bg: rgba(15, 15, 35, 0.7);
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
+        }
+        
+        .neon-purple-text {
+            text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple);
+        }
+        
+        .neon-border {
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), inset 0 0 10px var(--neon-blue);
+        }
+        
+        .neon-purple-border {
+            border: 1px solid var(--neon-purple);
+            box-shadow: 0 0 10px var(--neon-purple), inset 0 0 10px var(--neon-purple);
+        }
+        
+        .cyber-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-input {
+            background: rgba(10, 10, 30, 0.7);
+            border: 1px solid var(--neon-blue);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .cyber-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+        
+        .cyber-tab {
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-tab.active {
+            background: rgba(0, 247, 255, 0.2);
+            border-bottom: 2px solid var(--neon-blue);
+        }
+        
+        .cyber-btn {
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cyber-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 247, 255, 0.4), transparent);
+            transition: all 0.5s;
+        }
+        
+        .cyber-btn:hover:before {
+            left: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Панель авторизации (активна по умолчанию) -->
+        <div id="loginPanel" class="flex justify-center items-center min-h-screen">
+            <div class="cyber-card neon-border p-8 max-w-md w-full">
+                <h1 class="text-2xl font-orbitron neon-text text-center mb-6">CRYPTO<span class="neon-purple-text">FORESIGHT</span></h1>
+                <h2 class="text-xl text-center mb-8">Панель администратора</h2>
+                
+                <form id="loginForm" class="space-y-6">
+                    <div>
+                        <label class="block mb-2">Логин</label>
+                        <input type="text" id="username" class="w-full cyber-input px-4 py-3 rounded" value="admin">
+                    </div>
+                    <div>
+                        <label class="block mb-2">Пароль</label>
+                        <input type="password" id="password" class="w-full cyber-input px-4 py-3 rounded" value="admin">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full font-orbitron text-white cyber-btn">
+                        ВОЙТИ
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Основная панель администратора (скрыта по умолчанию) -->
+        <div id="adminPanel" class="hidden flex-1 flex flex-col">
+            <!-- Шапка -->
+            <header class="py-4 px-6 bg-gray-900 border-b border-gray-800 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-coins text-cyan-400 text-2xl"></i>
+                    <span class="text-xl font-orbitron neon-text">CryptoForesight Admin</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="viewSiteBtn" class="text-gray-300 hover:text-cyan-400 transition">
+                        <i class="fas fa-globe mr-2"></i> Просмотр сайта
+                    </button>
+                    <button id="logoutBtn" class="text-gray-300 hover:text-cyan-400 transition">
+                        <i class="fas fa-sign-out-alt mr-2"></i> Выход
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Основное содержимое -->
+            <div class="flex-1 flex">
+                <!-- Боковое меню -->
+                <div class="w-64 bg-gray-900 border-r border-gray-800 p-4">
+                    <ul class="space-y-2">
+                        <li>
+                            <button data-tab="dashboard" class="admin-tab w-full text-left py-3 px-4 rounded hover:bg-gray-800 transition active">
+                                <i class="fas fa-tachometer-alt mr-2"></i> Общие сведения
+                            </button>
+                        </li>
+                        <li>
+                            <button data-tab="tokens" class="admin-tab w-full text-left py-3 px-4 rounded hover:bg-gray-800 transition">
+                                <i class="fas fa-coins mr-2"></i> Управление токенами
+                            </button>
+                        </li>
+                        <li>
+                            <button data-tab="content" class="admin-tab w-full text-left py-3 px-4 rounded hover:bg-gray-800 transition">
+                                <i class="fas fa-edit mr-2"></i> Редактирование контента
+                            </button>
+                        </li>
+                        <li>
+                            <button data-tab="messages" class="admin-tab w-full text-left py-3 px-4 rounded hover:bg-gray-800 transition">
+                                <i class="fas fa-envelope mr-2"></i> Сообщения
+                            </button>
+                        </li>
+                        <li>
+                            <button data-tab="settings" class="admin-tab w-full text-left py-3 px-4 rounded hover:bg-gray-800 transition">
+                                <i class="fas fa-cog mr-2"></i> Настройки
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Контентная область -->
+                <div class="flex-1 p-6 bg-gray-800 overflow-auto">
+                    <!-- Вкладка Dashboard -->
+                    <div id="dashboard-tab" class="admin-tab-content">
+                        <h2 class="text-2xl font-orbitron mb-6">Общие сведения</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="cyber-card p-6 neon-border">
+                                <div class="text-4xl font-bold mb-2">3</div>
+                                <div class="text-gray-400">Активных токена</div>
+                            </div>
+                            <div class="cyber-card p-6 neon-border">
+                                <div class="text-4xl font-bold mb-2">14</div>
+                                <div class="text-gray-400">Сообщений</div>
+                            </div>
+                            <div class="cyber-card p-6 neon-border">
+                                <div class="text-4xl font-bold mb-2">1,248</div>
+                                <div class="text-gray-400">Посещений</div>
+                            </div>
+                        </div>
+                        
+                        <div class="cyber-card p-6 neon-border mb-6">
+                            <h3 class="text-xl font-bold mb-4">Последние действия</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-center">
+                                    <span class="text-cyan-400 mr-3"><i class="fas fa-edit"></i></span>
+                                    <div>
+                                        <p>Обновлена информация о токене QUANTUM</p>
+                                        <p class="text-gray-400 text-sm">2 часа назад</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-cyan-400 mr-3"><i class="fas fa-envelope"></i></span>
+                                    <div>
+                                        <p>Новое сообщение от клиента</p>
+                                        <p class="text-gray-400 text-sm">5 часов назад</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-cyan-400 mr-3"><i class="fas fa-plus"></i></span>
+                                    <div>
+                                        <p>Добавлен новый токен NEURAL</p>
+                                        <p class="text-gray-400 text-sm">1 день назад</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Вкладка Tokens -->
+                    <div id="tokens-tab" class="admin-tab-content hidden">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-orbitron">Управление токенами</h2>
+                            <button id="addTokenBtn" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded font-orbitron text-white cyber-btn">
+                                <i class="fas fa-plus mr-2"></i> Добавить токен
+                            </button>
+                        </div>
+                        
+                        <div class="cyber-card neon-border p-6 mb-8 hidden" id="tokenForm">
+                            <h3 class="text-xl font-bold mb-4">Добавление/редактирование токена</h3>
+                            <form id="tokenEditForm" class="space-y-4">
+                                <input type="hidden" id="tokenId" value="">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block mb-2">Название токена</label>
+                                        <input type="text" id="tokenName" class="w-full cyber-input px-4 py-2 rounded">
+                                    </div>
+                                    <div>
+                                        <label class="block mb-2">Иконка</label>
+                                        <select id="tokenIcon" class="w-full cyber-input px-4 py-2 rounded">
+                                            <option value="fa-coins">Монеты</option>
+                                            <option value="fa-atom">Атом</option>
+                                            <option value="fa-leaf">Лист</option>
+                                            <option value="fa-rocket">Ракета</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Описание</label>
+                                    <textarea id="tokenDescription" rows="3" class="w-full cyber-input px-4 py-2 rounded"></textarea>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block mb-2">Потенциальная доходность</label>
+                                        <input type="text" id="tokenProfit" class="w-full cyber-input px-4 py-2 rounded">
+                                    </div>
+                                    <div>
+                                        <label class="block mb-2">Ожидаемые биржи</label>
+                                        <input type="text" id="tokenExchanges" class="w-full cyber-input px-4 py-2 rounded">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Процент готовности (0-100)</label>
+                                    <input type="number" id="tokenProgress" min="0" max="100" class="w-full cyber-input px-4 py-2 rounded">
+                                </div>
+                                <div class="flex space-x-3">
+                                    <button type="submit" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded font-orbitron text-white cyber-btn">
+                                        Сохранить
+                                    </button>
+                                    <button type="button" id="cancelTokenEdit" class="px-4 py-2 bg-gray-700 rounded font-orbitron text-white cyber-btn">
+                                        Отмена
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="w-full cyber-card neon-border">
+                                <thead>
+                                    <tr class="bg-gray-900">
+                                        <th class="p-4 text-left">Название</th>
+                                        <th class="p-4 text-left">Описание</th>
+                                        <th class="p-4 text-left">Доходность</th>
+                                        <th class="p-4 text-left">Биржи</th>
+                                        <th class="p-4 text-left">Прогресс</th>
+                                        <th class="p-4 text-left">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tokenTable">
+                                    <tr class="border-t border-gray-800">
+                                        <td class="p-4"><span class="font-bold">QUANTUM</span></td>
+                                        <td class="p-4 text-sm text-gray-300">Протокол нового поколения с квантовой устойчивостью</td>
+                                        <td class="p-4">5-10x</td>
+                                        <td class="p-4">Binance, Coinbase</td>
+                                        <td class="p-4">85%</td>
+                                        <td class="p-4">
+                                            <button class="text-cyan-400 hover:text-cyan-300 mr-2 edit-token-btn" 
+                                                    data-token='{"id":1,"name":"QUANTUM","icon":"fa-coins","description":"Протокол нового поколения с квантовой устойчивостью","profit":"5-10x","exchanges":"Binance, Coinbase","progress":85}'>
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-400 hover:text-red-300 delete-token-btn">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-t border-gray-800">
+                                        <td class="p-4"><span class="font-bold">NEURAL</span></td>
+                                        <td class="p-4 text-sm text-gray-300">Децентрализованная сеть на основе ИИ</td>
+                                        <td class="p-4">8-15x</td>
+                                        <td class="p-4">Kraken, FTX</td>
+                                        <td class="p-4">72%</td>
+                                        <td class="p-4">
+                                            <button class="text-cyan-400 hover:text-cyan-300 mr-2 edit-token-btn"
+                                                    data-token='{"id":2,"name":"NEURAL","icon":"fa-atom","description":"Децентрализованная сеть на основе ИИ","profit":"8-15x","exchanges":"Kraken, FTX","progress":72}'>
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-400 hover:text-red-300 delete-token-btn">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-t border-gray-800">
+                                        <td class="p-4"><span class="font-bold">ECOGEN</span></td>
+                                        <td class="p-4 text-sm text-gray-300">Устойчивый блокчейн для торговли углеродными кредитами</td>
+                                        <td class="p-4">3-7x</td>
+                                        <td class="p-4">Huobi, KuCoin</td>
+                                        <td class="p-4">65%</td>
+                                        <td class="p-4">
+                                            <button class="text-cyan-400 hover:text-cyan-300 mr-2 edit-token-btn"
+                                                    data-token='{"id":3,"name":"ECOGEN","icon":"fa-leaf","description":"Устойчивый блокчейн для торговли углеродными кредитами","profit":"3-7x","exchanges":"Huobi, KuCoin","progress":65}'>
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-400 hover:text-red-300 delete-token-btn">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Вкладка Content -->
+                    <div id="content-tab" class="admin-tab-content hidden">
+                        <h2 class="text-2xl font-orbitron mb-6">Редактирование контента</h2>
+                        
+                        <div class="cyber-card neon-border p-6 mb-6">
+                            <h3 class="text-xl font-bold mb-4">Основные заголовки</h3>
+                            <form id="headingsForm" class="space-y-4">
+                                <div>
+                                    <label class="block mb-2">Заголовок главной страницы</label>
+                                    <input type="text" id="mainHeading" value="ОТКРОЙТЕ КРИПТОВОЗМОЖНОСТИ" class="w-full cyber-input px-4 py-2 rounded">
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Подзаголовок главной страницы</label>
+                                    <textarea id="mainSubheading" rows="3" class="w-full cyber-input px-4 py-2 rounded">Узнайте о новых перспективных токенах до их выхода на крупные биржи. Наш экспертный анализ дает вам преимущество для мудрых инвестиций на быстроразвивающемся крипторынке.</textarea>
+                                </div>
+                                <button type="submit" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded font-orbitron text-white cyber-btn">
+                                    Сохранить
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="cyber-card neon-border p-6 mb-6">
+                            <h3 class="text-xl font-bold mb-4">Секция "Преимущества"</h3>
+                            <form id="featuresForm" class="space-y-4">
+                                <div>
+                                    <label class="block mb-2">Заголовок секции</label>
+                                    <input type="text" id="featuresHeading" value="НАШИ ПРЕИМУЩЕСТВА" class="w-full cyber-input px-4 py-2 rounded">
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Описание секции</label>
+                                    <textarea id="featuresDescription" rows="3" class="w-full cyber-input px-4 py-2 rounded">Мы предоставляем эксклюзивную аналитику крипторынка, которая дает вам конкурентное преимущество</textarea>
+                                </div>
+                                <button type="submit" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded font-orbitron text-white cyber-btn">
+                                    Сохранить
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="cyber-card neon-border p-6">
+                            <h3 class="text-xl font-bold mb-4">Секция "Контакты"</h3>
+                            <form id="contactForm" class="space-y-4">
+                                <div>
+                                    <label class="block mb-2">Email для связи</label>
+                                    <input type="email" id="contactEmail" value="cryptoforesight7@gmail.com" class="w-full cyber-input px-4 py-2 rounded">
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Телеграм</label>
+                                    <input type="text" id="contactTelegram" value="@cryptoforesight7" class="w-full cyber-input px-4 py-2 rounded">
+                                </div>
+                                <button type="submit" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded font-orbitron text-white cyber-btn">
+                                    Сохранить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Вкладка Messages -->
+                    <div id="messages-tab" class="admin-tab-content hidden">
+                        <h2 class="text-2xl font-orbitron mb-6">Сообщения</h2>
+                        
+                        <div class="cyber-card neon-border p-4 mb-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-xl font-bold">Полученные сообщения</h3>
+                                <div>
+                                    <button class="px-3 py-1 bg-gray-700 rounded text-sm">Удалить все</button>
+                                    <button class="px-3 py-1 bg-gray-700 rounded text-sm ml-2">Отметить все как прочитанные</button>
+                                </div>
+                            </div>
+                            
+                            <div class="divide-y divide-gray-800">
+                                <div class="py-4 border-b border-gray-800 hover:bg-gray-900 transition cursor-pointer">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="font-bold">Иван Петров</span>
+                                        <span class="text-gray-400 text-sm">1 час назад</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <p class="text-gray-300 text-sm">Заинтересован в инвестициях в проект QUANTUM...</p>
+                                        <div>
+                                            <span class="inline-block w-2 h-2 bg-cyan-400 rounded-full mr-2"></span>
+                                            <span class="text-gray-400 text-sm">Новое</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="py-4 border-b border-gray-800 hover:bg-gray-900 transition cursor-pointer">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="font-bold">Алексей Сидоров</span>
+                                        <span class="text-gray-400 text-sm">3 часа назад</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <p class="text-gray-300 text-sm">Хотел бы узнать больше о вашей аналитике...</p>
+                                        <div>
+                                            <span class="inline-block w-2 h-2 bg-cyan-400 rounded-full mr-2"></span>
+                                            <span class="text-gray-400 text-sm">Новое</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="py-4 border-b border-gray-800 hover:bg-gray-900 transition cursor-pointer opacity-70">
+                                    <div class="flex justify-between mb-2">
+                                        <span class="font-bold">Ольга Кузнецова</span>
+                                        <span class="text-gray-400 text-sm">1 день назад</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <p class="text-gray-300 text-sm">Вопрос по поводу партнерского сотрудничества...</p>
+                                        <span class="text-gray-400 text-sm">Прочитано</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Вкладка Settings -->
+                    <div id="settings-tab" class="admin-tab-content hidden">
+                        <h2 class="text-2xl font-orbitron mb-6">Настройки</h2>
+                        
+                        <div class="cyber-card neon-border p-6 mb-6">
+                            <h3 class="text-xl font-bold mb-4">Учетные данные</h3>
+                            <form id="credentialsForm" class="space-y-4">
+                                <div>
+                                    <label class="block mb-2">Логин администратора</label>
+                                    <input type="text" id="adminUsername" value="admin" class="w-full cyber-input px-4 py-2 rounded">
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Новый пароль</label>
+                                    <input type="password" id="adminPassword" placeholder="Оставьте пустым, чтобы сохранить текущий" class="w-full cyber-input px-4 py-2 rounded">
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Подтверждение пароля</label>
+                                    <input type="password" id="adminPasswordConfirm" placeholder="Повторите новый пароль" class="w-full cyber-input px-4 py-2 rounded">
+                                </div>
+                                <button type="submit" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded font-orbitron text-white cyber-btn">
+                                    Сохранить
+                                </button>
+                            </form>
+                        </div>
+                        
+                        <div class="cyber-card neon-border p-6">
+                            <h3 class="text-xl font-bold mb-4">Настройки сайта</h3>
+                            <form id="siteSettingsForm" class="space-y-4">
+                                <div>
+                                    <label class="block mb-2">Название сайта</label>
+                                    <input type="text" id="siteName" value="CryptoForesight - Будущее криптоинвестиций" class="w-full cyber-input px-4 py-2 rounded">
+                                </div>
+                                <div>
+                                    <label class="block mb-2">Теги мета-описания</label>
+                                    <textarea id="metaDescription" rows="3" class="w-full cyber-input px-4 py-2 rounded">CryptoForesight предоставляет эксклюзивную информацию о перспективных токенах до их выхода на крупные биржи.</textarea>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <input type="checkbox" id="siteMaintenance" class="cyber-input rounded">
+                                    <label>Включить режим обслуживания</label>
+                                </div>
+                                <button type="submit" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 rounded font-orbitron text-white cyber-btn">
+                                    Сохранить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Авторизация
+            const loginForm = document.getElementById('loginForm');
+            const loginPanel = document.getElementById('loginPanel');
+            const adminPanel = document.getElementById('adminPanel');
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                // Простая проверка (в реальном проекте использовалась бы настоящая авторизация через API)
+                if (username === 'admin' && password === 'admin') {
+                    loginPanel.classList.add('hidden');
+                    adminPanel.classList.remove('hidden');
+                    adminPanel.classList.add('flex');
+                } else {
+                    alert('Неверные учетные данные!');
+                }
+            });
+            
+            // Выход из системы
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                adminPanel.classList.add('hidden');
+                adminPanel.classList.remove('flex');
+                loginPanel.classList.remove('hidden');
+            });
+            
+            // Просмотр сайта
+            document.getElementById('viewSiteBtn').addEventListener('click', function() {
+                window.open('index.html', '_blank');
+            });
+            
+            // Переключение вкладок
+            const adminTabs = document.querySelectorAll('.admin-tab');
+            const adminTabContents = document.querySelectorAll('.admin-tab-content');
+            
+            adminTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Убираем активный класс у всех вкладок
+                    adminTabs.forEach(t => t.classList.remove('active', 'bg-gray-800'));
+                    adminTabContents.forEach(c => c.classList.add('hidden'));
+                    
+                    // Добавляем активный класс к выбранной вкладке
+                    this.classList.add('active', 'bg-gray-800');
+                    
+                    // Показываем выбранную вкладку
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+                });
+            });
+            
+            // Управление токенами
+            const addTokenBtn = document.getElementById('addTokenBtn');
+            const tokenForm = document.getElementById('tokenForm');
+            const tokenEditForm = document.getElementById('tokenEditForm');
+            const cancelTokenEdit = document.getElementById('cancelTokenEdit');
+            
+            // Показ формы добавления токена
+            addTokenBtn.addEventListener('click', function() {
+                // Очистка формы для создания нового токена
+                document.getElementById('tokenId').value = '';
+                document.getElementById('tokenName').value = '';
+                document.getElementById('tokenDescription').value = '';
+                document.getElementById('tokenProfit').value = '';
+                document.getElementById('tokenExchanges').value = '';
+                document.getElementById('tokenProgress').value = '50';
+                
+                tokenForm.classList.remove('hidden');
+            });
+            
+            // Скрытие формы редактирования
+            cancelTokenEdit.addEventListener('click', function() {
+                tokenForm.classList.add('hidden');
+            });
+            
+            // Редактирование токена
+            document.querySelectorAll('.edit-token-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tokenData = JSON.parse(this.getAttribute('data-token'));
+                    
+                    document.getElementById('tokenId').value = tokenData.id;
+                    document.getElementById('tokenName').value = tokenData.name;
+                    document.getElementById('tokenIcon').value = tokenData.icon;
+                    document.getElementById('tokenDescription').value = tokenData.description;
+                    document.getElementById('tokenProfit').value = tokenData.profit;
+                    document.getElementById('tokenExchanges').value = tokenData.exchanges;
+                    document.getElementById('tokenProgress').value = tokenData.progress;
+                    
+                    tokenForm.classList.remove('hidden');
+                });
+            });
+            
+            // Сохранение токена
+            tokenEditForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // В реальном проекте здесь был бы запрос к API для сохранения данных
+                alert('Токен успешно сохранен! (Имитация)');
+                tokenForm.classList.add('hidden');
+            });
+            
+            // Удаление токена
+            document.querySelectorAll('.delete-token-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (confirm('Вы уверены, что хотите удалить этот токен?')) {
+                        // В реальном проекте здесь был бы запрос к API для удаления
+                        alert('Токен успешно удален! (Имитация)');
+                    }
+                });
+            });
+            
+            // Сохранение заголовков
+            document.getElementById('headingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Заголовки успешно сохранены! (Имитация)');
+            });
+            
+            // Сохранение секции Преимущества
+            document.getElementById('featuresForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Секция "Преимущества" успешно обновлена! (Имитация)');
+            });
+            
+            // Сохранение контактов
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Контактная информация успешно обновлена! (Имитация)');
+            });
+            
+            // Сохранение учетных данных
+            document.getElementById('credentialsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const newPassword = document.getElementById('adminPassword').value;
+                const confirmPassword = document.getElementById('adminPasswordConfirm').value;
+                
+                if (newPassword && newPassword !== confirmPassword) {
+                    alert('Пароли не совпадают!');
+                    return;
+                }
+                
+                alert('Учетные данные успешно обновлены! (Имитация)');
+            });
+            
+            // Сохранение настроек сайта
+            document.getElementById('siteSettingsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Настройки сайта успешно сохранены! (Имитация)');
+            });
+        });
+    </script>
+    
+    <!-- Include language scripts -->
+    <script src="languages.js"></script>
+    <script src="language-switcher.js"></script>
+</body>
+</html> 

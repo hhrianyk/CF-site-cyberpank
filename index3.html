@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html id="html-document">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нашей Компании | CryptoForesight</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="languages.js"></script>
+    <script src="language-switcher.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap');
+        
+        :root {
+            --neon-blue: #00f0ff;
+            --cyber-violet: #8a2be2;
+            --acid-green: #7fff00;
+            --hot-pink: #ff1493;
+            --dark-bg: #0a0a0a;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            color: var(--neon-blue);
+        }
+        
+        .violet-glow {
+            text-shadow: 0 0 10px var(--cyber-violet), 0 0 20px var(--cyber-violet);
+            color: var(--cyber-violet);
+        }
+        
+        .green-glow {
+            text-shadow: 0 0 10px var(--acid-green), 0 0 20px var(--acid-green);
+            color: var(--acid-green);
+        }
+        
+        .pink-glow {
+            text-shadow: 0 0 10px var(--hot-pink), 0 0 20px var(--hot-pink);
+            color: var(--hot-pink);
+        }
+        
+        .border-glow {
+            box-shadow: 0 0 15px var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+        }
+        
+        .border-violet-glow {
+            box-shadow: 0 0 15px var(--cyber-violet);
+            border: 1px solid var(--cyber-violet);
+        }
+        
+        .border-green-glow {
+            box-shadow: 0 0 15px var(--acid-green);
+            border: 1px solid var(--acid-green);
+        }
+        
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translate(0, 0px); }
+            50% { transform: translate(0, 15px); }
+            100% { transform: translate(0, -0px); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        .moving-bg {
+            background: linear-gradient(45deg, 
+                var(--dark-bg) 20%, 
+                var(--cyber-violet) 40%, 
+                var(--hot-pink) 60%, 
+                var(--dark-bg) 80%);
+            background-size: 300% 300%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .cyber-card {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px var(--hot-pink);
+        }
+        
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(138, 43, 226, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 43, 226, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        
+        .scanline {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scanline::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(0, 240, 255, 0.05) 50%,
+                transparent 100%
+            );
+            animation: scan 8s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+        
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            color: var(--hot-pink);
+            animation: glitch-effect 3s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        }
+        
+        .glitch::after {
+            color: var(--acid-green);
+            animation: glitch-effect 2s infinite reverse;
+            clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+        }
+        
+        @keyframes glitch-effect {
+            0% { transform: translate(0); }
+            20% { transform: translate(-3px, 3px); }
+            40% { transform: translate(-3px, -3px); }
+            60% { transform: translate(3px, 3px); }
+            80% { transform: translate(3px, -3px); }
+            100% { transform: translate(0); }
+        }
+        
+        .floating-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--neon-blue);
+            opacity: 0.6;
+            animation: float-dot linear infinite;
+        }
+        
+        @keyframes float-dot {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+        
+        .binary-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .binary-digit {
+            position: absolute;
+            color: var(--acid-green);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            animation: binary-fall linear infinite;
+        }
+        
+        @keyframes binary-fall {
+            0% { transform: translateY(-100px); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        .holographic-effect {
+            position: relative;
+        }
+        
+        .holographic-effect::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, 
+                var(--neon-blue) 0%, 
+                var(--cyber-violet) 25%, 
+                var(--hot-pink) 50%, 
+                var(--acid-green) 75%, 
+                var(--neon-blue) 100%);
+            background-size: 400% 400%;
+            z-index: -1;
+            border-radius: inherit;
+            animation: hologram 6s ease infinite;
+            filter: blur(10px);
+            opacity: 0.7;
+        }
+        
+        @keyframes hologram {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Video Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 80%;
+            max-width: 900px;
+            background: rgba(10, 10, 10, 0.9);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5);
+            border: 1px solid var(--neon-blue);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            background: var(--hot-pink);
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border-bottom: 1px solid var(--neon-blue);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--neon-blue);
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body class="grid-pattern">
+    <div class="floating-dots" id="dots-container"></div>
+    <div class="binary-rain" id="binary-container"></div>
+    
+    <!-- Video Modal -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">CryptoForesight: Ваш гид в мире криптовалют</div>
+                <div class="close-btn" id="closeModal">&times;</div>
+            </div>
+            <div class="video-container">
+                <iframe id="youtubeVideo" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="moving-bg py-6 border-b border-violet-glow sticky top-0 z-50">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fas fa-coins text-3xl neon-text mr-3"></i>
+                <h1 class="text-3xl font-bold neon-text glitch" data-text="CryptoForesight">CryptoForesight</h1>
+            </div>
+            <nav>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index2.html" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="advantages">Преимущества</a>
+                    <a href="index4.html" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="tokens">Токены</a>
+                    <a href="index3.html" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="about">О нас</a>
+                    <a href="index.html#contact" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="contacts">Контакты</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="relative py-20 overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full opacity-20">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-600 filter blur-3xl opacity-50"></div>
+            <div class="absolute top-1/2 right-1/4 w-64 h-64 rounded-full bg-pink-600 filter blur-3xl opacity-50"></div>
+            <div class="absolute bottom-1/4 left-1/2 w-64 h-64 rounded-full bg-green-500 filter blur-3xl opacity-50"></div>
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col items-center text-center">
+                <h2 class="text-6xl font-bold mb-6 neon-text glitch" data-text="О НАШЕЙ КОМПАНИИ">О НАШЕЙ КОМПАНИИ</h2>
+                <p class="text-xl max-w-3xl mb-10 text-gray-300">
+                    Ваш надежный проводник в мире криптовалютных инвестиций. Мы создаем будущее финансов уже сегодня.
+                </p>
+                <div class="flex space-x-6">
+                    <button id="watchVideoBtn" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full font-bold hover:from-cyan-500 hover:to-blue-600 transition duration-500 flex items-center">
+                        <i class="fas fa-play mr-2"></i> Смотреть видео
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10 relative">
+                    <div class="cyber-card border-glow p-1 rounded-xl holographic-effect">
+                        <div class="bg-gray-900 rounded-xl overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1639762681057-408e52192e55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80" 
+                                 alt="Наша команда" 
+                                 class="w-full h-auto rounded-xl transform hover:scale-105 transition duration-700">
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-5 -left-5 w-32 h-32 bg-blue-600 rounded-full filter blur-xl opacity-40 -z-10"></div>
+                    <div class="absolute -top-5 -right-5 w-32 h-32 bg-pink-600 rounded-full filter blur-xl opacity-40 -z-10"></div>
+                </div>
+                <div class="lg:w-1/2">
+                    <h3 class="text-cyan-400 font-bold mb-4">// О НАС</h3>
+                    <h2 class="text-4xl font-bold mb-6 green-glow">Кто мы такие?</h2>
+                    <p class="text-gray-300 mb-6">
+                        Основанная в 2017 году, CryptoForesight успешно реализовала более 85 проектов, став одним из лидеров в области анализа и предоставления информации о перспективных криптовалютных активах.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 mb-8">
+                        <div class="cyber-card border-violet-glow p-6 rounded-lg">
+                            <div class="text-4xl violet-glow mb-3">
+                                <i class="fas fa-lock-open"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2 text-white">Эксклюзивный Доступ</h4>
+                            <p class="text-gray-400">Информация о токенах перед листингом</p>
+                        </div>
+                        <div class="cyber-card border-green-glow p-6 rounded-lg">
+                            <div class="text-4xl green-glow mb-3">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h4 class="text-xl font-bold mb-2 text-white">Профессиональный Анализ</h4>
+                            <p class="text-gray-400">Глубокое исследование каждого проекта</p>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Services Section -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-blue-900/30 to-purple-900/30 z-0"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-16">
+                <h3 class="text-cyan-400 font-bold mb-4">// НАШИ ПРЕИМУЩЕСТВА</h3>
+                <h2 class="text-4xl font-bold mb-6 neon-text">Что мы предлагаем</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="cyber-card border-glow p-8 rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transition duration-500">
+                    <div class="text-5xl neon-text mb-6">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Эксклюзивный Доступ</h3>
+                    <p class="text-gray-400">Получайте информацию о токенах, которые готовятся к листингу на международных биржах, чтобы быть на шаг впереди.</p>
+                </div>
+                <div class="cyber-card border-violet-glow p-8 rounded-xl hover:shadow-lg hover:shadow-purple-500/30 transition duration-500">
+                    <div class="text-5xl violet-glow mb-6">
+                        <i class="fas fa-search-dollar"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Профессиональный Анализ</h3>
+                    <p class="text-gray-400">Наши эксперты изучают каждый проект, анализируя команду, технологии и рыночные перспективы.</p>
+                </div>
+                <div class="cyber-card border-green-glow p-8 rounded-xl hover:shadow-lg hover:shadow-green-500/30 transition duration-500">
+                    <div class="text-5xl green-glow mb-6">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Максимальная Прозрачность</h3>
+                    <p class="text-gray-400">Мы гарантируем честность и открытость, предоставляя только проверенную информацию.</p>
+                </div>
+                <div class="cyber-card border-glow p-8 rounded-xl hover:shadow-lg hover:shadow-cyan-500/30 transition duration-500">
+                    <div class="text-5xl neon-text mb-6">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Удобство и Надежность</h3>
+                    <p class="text-gray-400">Профессиональное сопровождение и круглосуточная поддержка для вашего комфорта.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Why Choose Us Section -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20 z-0"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                    <h3 class="text-cyan-400 font-bold mb-4">// ПОЧЕМУ МЫ</h3>
+                    <h2 class="text-4xl font-bold mb-6 pink-glow">Почему выбирают CryptoForesight?</h2>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <div class="text-blue-400 mr-4 mt-1">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1 text-white">Экспертность</h4>
+                                <p class="text-gray-400">Команда профессионалов с многолетним опытом в криптовалютной индустрии</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-pink-400 mr-4 mt-1">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1 text-white">Актуальность</h4>
+                                <p class="text-gray-400">Отслеживаем новейшие тенденции и возможности на рынке</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="text-green-400 mr-4 mt-1">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-1 text-white">Доверие</h4>
+                                <p class="text-gray-400">Репутация, построенная на честности и прозрачности</p>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+                
+                    <div class="absolute -bottom-5 -right-5 w-32 h-32 bg-blue-600 rounded-full filter blur-xl opacity-40 -z-10"></div>
+                    <div class="absolute -top-5 -left-5 w-32 h-32 bg-pink-600 rounded-full filter blur-xl opacity-40 -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Section -->
+    <section class="py-20">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h3 class="text-cyan-400 font-bold mb-4">// НАШИ ДОСТИЖЕНИЯ</h3>
+                <h2 class="text-4xl font-bold mb-6 neon-text">В цифрах</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="cyber-card border-glow p-8 rounded-xl text-center hover:shadow-lg hover:shadow-blue-500/30 transition duration-500">
+                    <div class="text-5xl font-bold mb-3 neon-text" id="counter1">0</div>
+                    <h4 class="text-xl font-bold mb-2 text-white">Завершенных проектов</h4>
+                    <p class="text-gray-400">С 2017 года</p>
+                </div>
+                <div class="cyber-card border-violet-glow p-8 rounded-xl text-center hover:shadow-lg hover:shadow-purple-500/30 transition duration-500">
+                    <div class="text-5xl font-bold mb-3 violet-glow" id="counter2">0</div>
+                    <h4 class="text-xl font-bold mb-2 text-white">Аналитических отчетов</h4>
+                    <p class="text-gray-400">Высокая точность прогнозов</p>
+                </div>
+                <div class="cyber-card border-green-glow p-8 rounded-xl text-center hover:shadow-lg hover:shadow-green-500/30 transition duration-500">
+                    <div class="text-5xl font-bold mb-3 green-glow" id="counter3">0</div>
+                    <h4 class="text-xl font-bold mb-2 text-white">Экспертов в команде</h4>
+                    <p class="text-gray-400">Профессионалы рынка</p>
+                </div>
+                <div class="cyber-card border-glow p-8 rounded-xl text-center hover:shadow-lg hover-shadow-cyan-500/30 transition duration-500">
+                    <div class="text-5xl font-bold mb-3 pink-glow" id="counter4">0</div>
+                    <h4 class="text-xl font-bold mb-2 text-white">Стран охвата</h4>
+                    <p class="text-gray-400">Глобальное присутствие</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/40 to-purple-900/40 z-0"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="cyber-card border-glow rounded-xl p-12 text-center">
+                <h2 class="text-4xl font-bold mb-6 neon-text">Готовы к прибыльным инвестициям?</h2>
+                <p class="text-xl max-w-2xl mx-auto mb-8 text-gray-300">
+                    Начните свой путь к успеху в мире криптовалют с CryptoForesight и доверьтесь профессионалам.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                    <button class="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full font-bold hover:from-cyan-500 hover:to-blue-600 transition duration-500 flex items-center justify-center">
+                        <i class="fas fa-paper-plane mr-3"></i> Отправить запрос
+                    </button>
+                    <button class="px-8 py-4 border-2 border-green-500 text-green-400 rounded-full font-bold hover:bg-green-900/30 transition duration-500 flex items-center justify-center">
+                        <i class="fas fa-phone-alt mr-3"></i> Консультация
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900/80 py-12 border-t border-blue-900">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-coins text-2xl neon-text mr-3"></i>
+                        <h3 class="text-2xl font-bold neon-text">CryptoForesight</h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Лидер в анализе криптовалютных активов. Инновации. Надежность. Прибыль.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://t.me/cryptoforesight7" class="text-blue-400 hover:text-blue-300 text-xl"><i class="fab fa-telegram"></i></a>
+                        <a href="https://www.tiktok.com/@cryptoforesight7" class="text-blue-400 hover:text-blue-300 text-xl"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/cryptoforesight7" class="text-blue-400 hover:text-blue-300 text-xl"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/cryptoforesight7" class="text-blue-400 hover:text-blue-300 text-xl"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/60109699805" class="text-blue-400 hover:text-blue-300 text-xl"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:cryptoforesight7@gmail.com" class="text-blue-400 hover:text-blue-300 text-xl"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold text-white mb-4">Контакты</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400"><i class="fas fa-map-marker-alt mr-2 text-blue-400"></i> Москва, Пресненская наб., 10</li>
+                        <li class="text-gray-400"><i class="fab fa-telegram mr-2 text-blue-400"></i> <a href="https://t.me/cryptoforesight7" class="hover:text-blue-300">@cryptoforesight7</a></li>
+                        <li class="text-gray-400"><i class="fas fa-envelope mr-2 text-blue-400"></i> <a href="mailto:cryptoforesight7@gmail.com" class="hover:text-blue-300">cryptoforesight7@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-gray-800">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-500 mb-4 md:mb-0">© 2017-2025 CryptoForesight. Все права защищены.</p>
+                    <div class="flex space-x-4">
+                        <a href="https://t.me/cryptoforesight7" class="text-gray-500 hover:text-blue-300" title="Telegram"><i class="fab fa-telegram"></i></a>
+                        <a href="https://www.tiktok.com/@cryptoforesight7" class="text-gray-500 hover:text-blue-300" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com/cryptoforesight7" class="text-gray-500 hover:text-blue-300" title="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/cryptoforesight7" class="text-gray-500 hover:text-blue-300" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/60109699805" class="text-gray-500 hover:text-blue-300" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:cryptoforesight7@gmail.com" class="text-gray-500 hover:text-blue-300" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Floating dots animation
+        function createDots() {
+            const container = document.getElementById('dots-container');
+            const dotCount = 30;
+            
+            for (let i = 0; i < dotCount; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100 + 100; // Start below viewport
+                
+                // Random size
+                const size = Math.random() * 4 + 2;
+                
+                // Random animation duration
+                const duration = Math.random() * 15 + 10;
+                
+                // Random delay
+                const delay = Math.random() * 20;
+                
+                dot.style.left = `${posX}%`;
+                dot.style.top = `${posY}%`;
+                dot.style.width = `${size}px`;
+                dot.style.height = `${size}px`;
+                dot.style.animationDuration = `${duration}s`;
+                dot.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(dot);
+            }
+        }
+        
+        // Binary rain animation
+        function createBinaryRain() {
+            const container = document.getElementById('binary-container');
+            const columns = Math.floor(window.innerWidth / 20);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.style.position = 'absolute';
+                column.style.left = `${(i * 20) + 10}px`;
+                column.style.top = '0';
+                column.style.width = '10px';
+                column.style.height = '100vh';
+                
+                // Random number of digits per column
+                const digitCount = Math.floor(Math.random() * 10) + 5;
+                
+                for (let j = 0; j < digitCount; j++) {
+                    const digit = document.createElement('div');
+                    digit.classList.add('binary-digit');
+                    digit.textContent = Math.round(Math.random()) ? '1' : '0';
+                    
+                    // Random vertical position
+                    const top = Math.random() * 100;
+                    
+                    // Random animation duration
+                    const duration = Math.random() * 10 + 5;
+                    
+                    // Random delay
+                    const delay = Math.random() * 5;
+                    
+                    digit.style.top = `-${top}px`;
+                    digit.style.left = '0';
+                    digit.style.animationDuration = `${duration}s`;
+                    digit.style.animationDelay = `${delay}s`;
+                    
+                    column.appendChild(digit);
+                }
+                
+                container.appendChild(column);
+            }
+        }
+        
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('[id^="counter"]');
+            const speed = 200;
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target') || 
+                    (counter.id === 'counter1' ? 85 : 
+                     counter.id === 'counter2' ? 120 : 
+                     counter.id === 'counter3' ? 25 : 
+                     15));
+                
+                const count = () => {
+                    const current = parseInt(counter.innerText);
+                    const increment = target / speed;
+                    
+                    if (current < target) {
+                        counter.innerText = Math.ceil(current + increment);
+                        setTimeout(count, 10);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                
+                counter.setAttribute('data-target', target);
+                count();
+            });
+        }
+        
+        // Glitch effect on hover
+        function setupGlitchEffects() {
+            const glitchElements = document.querySelectorAll('.glitch');
+            
+            glitchElements.forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    el.style.animation = 'glitch-effect 0.5s infinite';
+                });
+                
+                el.addEventListener('mouseleave', () => {
+                    el.style.animation = '';
+                });
+            });
+        }
+
+        // Video Modal functionality
+        function setupVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const btn = document.getElementById('watchVideoBtn');
+            const closeBtn = document.getElementById('closeModal');
+            const videoIframe = document.getElementById('youtubeVideo');
+            const videoUrl = "https://www.youtube.com/embed/ah1tQvO3j1s?autoplay=1&rel=0";
+
+            // Open modal
+            btn.addEventListener('click', () => {
+                videoIframe.src = videoUrl;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Close modal
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+                videoIframe.src = '';
+                document.body.style.overflow = '';
+            });
+
+            // Close when clicking outside
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    videoIframe.src = '';
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Close on ESC key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                    videoIframe.src = '';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+        
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', () => {
+            createDots();
+            createBinaryRain();
+            animateCounters();
+            setupGlitchEffects();
+            setupVideoModal();
+            
+            // Add floating animation to random elements
+            const elementsToFloat = document.querySelectorAll('.floating');
+            elementsToFloat.forEach(el => {
+                const delay = Math.random() * 5;
+                el.style.animationDelay = `${delay}s`;
+            });
+        });
+        
+        // Make binary rain responsive
+        window.addEventListener('resize', () => {
+            const binaryContainer = document.getElementById('binary-container');
+            binaryContainer.innerHTML = '';
+            createBinaryRain();
+        });
+    </script>
+    
+    <!-- Include language scripts -->
+    <script src="languages.js"></script>
+    <script src="language-switcher.js"></script>
+</body>
+</html>

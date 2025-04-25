@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html id="html-document">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoForesight | Токены</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="languages.js"></script>
+    <script src="language-switcher.js"></script>
+    <style>
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 1;
+            }
+            20%, 22%, 24%, 55% {
+                opacity: 0.5;
+            }
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 #ef4444, -0.05em -0.025em 0 #3b82f6; }
+            14% { text-shadow: 0.05em 0 0 #ef4444, -0.05em -0.025em 0 #3b82f6; }
+            15% { text-shadow: -0.05em -0.025em 0 #ef4444, 0.025em 0.025em 0 #3b82f6; }
+            49% { text-shadow: -0.05em -0.025em 0 #ef4444, 0.025em 0.025em 0 #3b82f6; }
+            50% { text-shadow: 0.025em 0.05em 0 #ef4444, 0.05em 0 0 #3b82f6, 0 -0.05em 0 #10b981; }
+            99% { text-shadow: 0.025em 0.05em 0 #ef4444, 0.05em 0 0 #3b82f6, 0 -0.05em 0 #10b981; }
+            100% { text-shadow: -0.025em 0 0 #ef4444, -0.025em -0.025em 0 #3b82f6; }
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(239, 68, 68, 0.5);
+            animation: scanline 3s linear infinite;
+            z-index: 9999;
+        }
+        
+        .flicker {
+            animation: flicker 3s infinite;
+        }
+        
+        .pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+        
+        .glitch-text {
+            animation: glitch 5s infinite;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #000000 0%, #1f2937 25%, #7f1d1d 50%, #000000 75%, #1f2937 100%);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .token-card {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .token-card:hover {
+            transform: translateY(-5px);
+            border-left: 3px solid #ef4444;
+            box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3), 0 4px 6px -2px rgba(239, 68, 68, 0.1);
+        }
+        
+        .hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        
+        .terminal-line {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .terminal-line:before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            color: #ef4444;
+        }
+        
+        .token-badge {
+            transition: all 0.3s ease;
+        }
+        
+        .token-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #ef4444 0%, #3b82f6 50%, #10b981 100%);
+            background-size: 200% 100%;
+            animation: gradient 3s ease infinite;
+        }
+    </style>
+</head>
+<body class="gradient-bg text-gray-100 min-h-screen font-mono overflow-x-hidden">
+    <div class="scanline"></div>
+    
+    <!-- Grid overlay -->
+    <div class="fixed inset-0 pointer-events-none" style="background-image: radial-gradient(rgba(239, 68, 68, 0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
+    
+    <!-- Main container -->
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <!-- Header -->
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 border-b border-red-900 pb-6">
+            <div class="flex items-center mb-4 md:mb-0">
+                <div class="hexagon bg-red-600 w-12 h-12 flex items-center justify-center mr-4">
+                    <i class="fas fa-eye text-white text-xl"></i>
+                </div>
+                <h1 class="glitch-text text-3xl md:text-4xl font-bold">
+                    <span class="text-red-500">Crypto</span><span class="text-blue-400">Foresight</span>
+                </h1>
+            </div>
+            
+            <div class="hidden md:flex space-x-8">
+                <a href="index2.html" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="advantages">Преимущества</a>
+                <a href="index4.html" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="tokens">Токены</a>
+                <a href="index3.html" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="about">О нас</a>
+                <a href="index.html#contact" class="text-white hover:text-cyan-400 transition duration-300 font-orbitron" data-i18n="contacts">Контакты</a>
+            </div>
+            
+            <div class="flex flex-col space-y-2">
+                <div class="flex items-center">
+                    <span class="terminal-line text-sm">Статус системы: <span class="text-green-400 pulse-red">РАБОТАЕТ</span></span>
+                </div>
+                <div class="flex items-center">
+                    <span class="terminal-line text-sm">Последнее обновление: <span class="text-blue-300">{{ new Date().toLocaleString() }}</span></span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Dashboard -->
+        <main>
+            <section class="mb-12">
+                <h2 class="text-xl md:text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-key mr-3 text-red-500"></i>
+                    <span>Последние выданные токены</span>
+                </h2>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-4 hover:border-red-500 transition-all">
+                        <div class="text-gray-400 text-sm">Всего токенов</div>
+                        <div class="text-2xl font-bold text-white">1,248</div>
+                        <div class="h-1 mt-2 bg-gradient-to-r from-black via-red-500 to-black"></div>
+                    </div>
+                    <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-4 hover:border-blue-500 transition-all">
+                        <div class="text-gray-400 text-sm">Активных сегодня</div>
+                        <div class="text-2xl font-bold text-blue-400">42</div>
+                        <div class="h-1 mt-2 bg-gradient-to-r from-black via-blue-500 to-black"></div>
+                    </div>
+                    <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-4 hover:border-green-500 transition-all">
+                        <div class="text-gray-400 text-sm">Верифицировано</div>
+                        <div class="text-2xl font-bold text-green-400">1,103</div>
+                        <div class="h-1 mt-2 bg-gradient-to-r from-black via-green-500 to-black"></div>
+                    </div>
+                    <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-4 hover:border-red-500 transition-all">
+                        <div class="text-gray-400 text-sm">Истекших</div>
+                        <div class="text-2xl font-bold text-red-400">145</div>
+                        <div class="h-1 mt-2 bg-gradient-to-r from-black via-red-500 to-black"></div>
+                    </div>
+                </div>
+                
+                <!-- Token Table -->
+                <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg overflow-hidden">
+                    <div class="grid grid-cols-12 bg-gray-900 bg-opacity-80 p-4 border-b border-gray-800 text-sm text-gray-400">
+                        <div class="col-span-2">ID токена</div>
+                        <div class="col-span-3">Клиент</div>
+                        <div class="col-span-2">Выдан</div>
+                        <div class="col-span-2">Истекает</div>
+                        <div class="col-span-2">Статус</div>
+                        <div class="col-span-1">Действия</div>
+                    </div>
+                    
+                    <!-- Token Rows -->
+                    <div id="tokenRows" class="divide-y divide-gray-800">
+                        <!-- Tokens will be dynamically inserted here -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Researched Tokens Section -->
+            <section class="mb-12">
+                <h2 class="text-xl md:text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-chart-line mr-3 text-purple-500"></i>
+                    <span>Последние токены, изученные компанией CryptoForesight</span>
+                </h2>
+                
+                <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-6 mb-6">
+                    <p class="text-gray-300 mb-6">
+                        В компании CryptoForesight мы гордимся нашим богатым опытом и результатами, которые достигли с помощью тщательного анализа и прогнозирования. За годы работы наша команда экспертов исследовала и проанализировала множество токенов, предоставляя нашим клиентам информацию, которая помогла им сделать успешные инвестиции.
+                    </p>
+                    
+                    <div class="progress-bar rounded-full mb-6"></div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- TokenX -->
+                        <div class="bg-gray-900 bg-opacity-70 border border-purple-900 rounded-lg p-5 token-badge">
+                            <div class="flex items-center mb-3">
+                                <div class="hexagon bg-purple-600 w-10 h-10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-rocket text-white"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-purple-400">TokenX</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-3">
+                                TokenX стал одним из самых успешных проектов, который мы изучили, с уникальной технологией блокчейна, нацеленной на улучшение скорости транзакций.
+                            </p>
+                            <div class="bg-gray-800 bg-opacity-50 p-2 rounded text-sm">
+                                <span class="text-green-400">Результаты:</span> После нашего анализа и рекомендаций, клиенты, инвестировавшие в TokenX, увидели значительный рост своих активов, когда цена токена увеличилась более чем на 300% в течение первого года.
+                            </div>
+                        </div>
+                        
+                        <!-- EcoCoin -->
+                        <div class="bg-gray-900 bg-opacity-70 border border-green-900 rounded-lg p-5 token-badge">
+                            <div class="flex items-center mb-3">
+                                <div class="hexagon bg-green-600 w-10 h-10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-leaf text-white"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-green-400">EcoCoin</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-3">
+                                EcoCoin был выбран благодаря своей инновационной модели, направленной на поддержку экологически чистых проектов и устойчивого развития.
+                            </p>
+                            <div class="bg-gray-800 bg-opacity-50 p-2 rounded text-sm">
+                                <span class="text-green-400">Результаты:</span> Мы предсказали его успешный рост, и наши клиенты смогли воспользоваться увеличением стоимости токена более чем на 250% после его листинга.
+                            </div>
+                        </div>
+                        
+                        <!-- HealthToken -->
+                        <div class="bg-gray-900 bg-opacity-70 border border-blue-900 rounded-lg p-5 token-badge">
+                            <div class="flex items-center mb-3">
+                                <div class="hexagon bg-blue-600 w-10 h-10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-heartbeat text-white"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-blue-400">HealthToken</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-3">
+                                HealthToken, ориентированный на улучшение доступа к медицинским услугам, привлек наше внимание благодаря своей социальной значимости и поддержке технологических инициатив в здравоохранении.
+                            </p>
+                            <div class="bg-gray-800 bg-opacity-50 p-2 rounded text-sm">
+                                <span class="text-green-400">Результаты:</span> После детального анализа мы рекомендовали его нашим клиентам, и их инвестиции возросли на 200% в течение первых шести месяцев.
+                            </div>
+                        </div>
+                        
+                        <!-- FinTechCoin -->
+                        <div class="bg-gray-900 bg-opacity-70 border border-red-900 rounded-lg p-5 token-badge">
+                            <div class="flex items-center mb-3">
+                                <div class="hexagon bg-red-600 w-10 h-10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-coins text-white"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-red-400">FinTechCoin</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-3">
+                                Этот токен выделился благодаря своим решениям в области финтех-инноваций, направленных на улучшение финансовой доступности для широких слоев населения.
+                            </p>
+                            <div class="bg-gray-800 bg-opacity-50 p-2 rounded text-sm">
+                                <span class="text-green-400">Результаты:</span> Наши клиенты, следуя нашим рекомендациям, получили значительную прибыль, когда FinTechCoin вырос в цене на 400% в первый год после нашего анализа.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-black bg-opacity-70 border border-gray-700 rounded-lg">
+                        <p class="text-gray-300 text-sm">
+                            <span class="text-yellow-400">Заключение:</span> Каждый из этих проектов был тщательно исследован нашей командой, и результаты говорят сами за себя. Мы предоставляем нашим клиентам не только информацию, но и уверенность в своих инвестициях. CryptoForesight продолжает изучать и анализировать самые перспективные токены, чтобы обеспечить наших клиентов лучшими возможностями на рынке криптовалют. Начните сотрудничество с нами и откройте для себя мир успешных инвестиций.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Terminal Section -->
+            <section class="mb-12">
+                <h2 class="text-xl md:text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-terminal mr-3 text-blue-500"></i>
+                    <span>Консоль управления токенами</span>
+                </h2>
+                
+                <div class="bg-black bg-opacity-70 border border-gray-800 rounded-lg p-4 font-mono text-sm">
+                    <div class="terminal-line mb-2">Инициализация системы управления токенами CryptoForesight...</div>
+                    <div class="terminal-line mb-2 text-green-400">Система готова. Введите 'help' для списка команд.</div>
+                    <div class="terminal-line mb-2">> <span class="text-red-400">generate_token --client=neocorp --access=full --duration=30d</span></div>
+                    <div class="terminal-line mb-2 text-blue-300">Токен создан: <span class="text-white">CFS-7X9K-4P2Q-1M3N</span></div>
+                    <div class="terminal-line mb-2">> <span class="text-red-400">list_tokens --recent=5</span></div>
+                    <div class="terminal-line mb-2">
+                        <div class="ml-4">
+                            <div>1. CFS-7X9K-4P2Q-1M3N | NeoCorp | Полный доступ | Истекает: 2025-04-15</div>
+                            <div>2. CFS-8Y2L-5R3S-9T4U | CyberDyne | Только чтение | Истекает: 2025-04-10</div>
+                            <div>3. CFS-1A2B-3C4D-5E6F | OmniTech | Админ | Истекает: 2025-04-05</div>
+                            <div>4. CFS-9Z8Y-7X6W-5V4U | Quantum Inc | API доступ | Истекает: 2025-03-30</div>
+                            <div>5. CFS-2B3C-4D5E-6F7G | NeuroLink | Полный доступ | Истекает: 2025-03-25</div>
+                        </div>
+                    </div>
+                    <div class="flex mt-4">
+                        <span class="text-red-400 mr-2">></span>
+                        <input type="text" class="bg-transparent border-none outline-none flex-grow text-white" placeholder="Введите команду..." autocomplete="off">
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Security Section -->
+            <section>
+                <h2 class="text-xl md:text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-shield-alt mr-3 text-green-500"></i>
+                    <span>Протоколы безопасности</span>
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-6 hover:border-red-500 transition-all">
+                        <div class="flex items-center mb-4">
+                            <div class="hexagon bg-red-500 w-10 h-10 flex items-center justify-center mr-4">
+                                <i class="fas fa-fingerprint text-white"></i>
+                            </div>
+                            <h3 class="text-lg font-bold">Биометрическая аутентификация</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm">Все токены требуют биометрической верификации для критических операций, гарантируя, что только авторизованный персонал может выполнять чувствительные команды.</p>
+                    </div>
+                    
+                    <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-6 hover:border-blue-500 transition-all">
+                        <div class="flex items-center mb-4">
+                            <div class="hexagon bg-blue-500 w-10 h-10 flex items-center justify-center mr-4">
+                                <i class="fas fa-lock text-white"></i>
+                            </div>
+                            <h3 class="text-lg font-bold">Квантовое шифрование</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm">Данные токенов защищены постквантовыми криптографическими алгоритмами, устойчивыми к самым современным попыткам взлома.</p>
+                    </div>
+                    
+                    <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-6 hover:border-green-500 transition-all">
+                        <div class="flex items-center mb-4">
+                            <div class="hexagon bg-green-500 w-10 h-10 flex items-center justify-center mr-4">
+                                <i class="fas fa-bolt text-white"></i>
+                            </div>
+                            <h3 class="text-lg font-bold">Мониторинг в реальном времени</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm">Наша нейронная сеть отслеживает всю активность токенов 24/7, мгновенно обнаруживая и нейтрализуя любые аномальные модели поведения.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="mt-16 border-t border-gray-800 pt-6 text-sm text-gray-500">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="terminal-line">CryptoForesight v3.1.4 | Нейронное ядро активно</span>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="https://t.me/cryptoforesight7" class="hover:text-cyan-400 transition-colors"><i class="fab fa-telegram mr-1"></i> Telegram</a>
+                    <a href="https://www.tiktok.com/@cryptoforesight7" class="hover:text-pink-400 transition-colors"><i class="fab fa-tiktok mr-1"></i> TikTok</a>
+                    <a href="https://www.facebook.com/cryptoforesight7" class="hover:text-blue-400 transition-colors"><i class="fab fa-facebook mr-1"></i> Facebook</a>
+                    <a href="https://www.instagram.com/cryptoforesight7" class="hover:text-purple-400 transition-colors"><i class="fab fa-instagram mr-1"></i> Instagram</a>
+                    <a href="https://wa.me/60109699805" class="hover:text-green-400 transition-colors"><i class="fab fa-whatsapp mr-1"></i> WhatsApp</a>
+                    <a href="mailto:cryptoforesight7@gmail.com" class="hover:text-green-400 transition-colors"><i class="fas fa-envelope mr-1"></i> Email</a>
+                </div>
+            </div>
+            <div class="mt-4 text-center md:text-left">
+                <span class="terminal-line">Внимание: Несанкционированный доступ к этой системе запрещен Законом о безопасности 2025. Все действия регистрируются.</span>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Glitch elements -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-red-500 opacity-10 mix-blend-screen" style="filter: blur(40px);"></div>
+        <div class="absolute top-1/3 right-1/3 w-48 h-48 rounded-full bg-blue-500 opacity-10 mix-blend-screen" style="filter: blur(60px);"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full bg-green-500 opacity-10 mix-blend-screen" style="filter: blur(80px);"></div>
+    </div>
+    
+    <script>
+        // Sample token data
+        const tokens = [
+            { id: "CFS-7X9K-4P2Q-1M3N", client: "NeoCorp", issued: "2025-03-15", expires: "2025-04-15", status: "active" },
+            { id: "CFS-8Y2L-5R3S-9T4U", client: "CyberDyne", issued: "2025-03-10", expires: "2025-04-10", status: "active" },
+            { id: "CFS-1A2B-3C4D-5E6F", client: "OmniTech", issued: "2025-03-05", expires: "2025-04-05", status: "warning" },
+            { id: "CFS-9Z8Y-7X6W-5V4U", client: "Quantum Inc", issued: "2025-02-28", expires: "2025-03-30", status: "expired" },
+            { id: "CFS-2B3C-4D5E-6F7G", client: "NeuroLink", issued: "2025-02-25", expires: "2025-03-25", status: "expired" }
+        ];
+        
+        // Function to render token rows
+        function renderTokenRows() {
+            const container = document.getElementById('tokenRows');
+            container.innerHTML = '';
+            
+            tokens.forEach(token => {
+                let statusClass, statusText;
+                switch(token.status) {
+                    case 'active':
+                        statusClass = 'text-green-400';
+                        statusText = 'Активен';
+                        break;
+                    case 'warning':
+                        statusClass = 'text-yellow-400';
+                        statusText = 'Скоро истекает';
+                        break;
+                    case 'expired':
+                        statusClass = 'text-red-400';
+                        statusText = 'Истёк';
+                        break;
+                    default:
+                        statusClass = 'text-gray-400';
+                        statusText = 'Неизвестно';
+                }
+                
+                const row = document.createElement('div');
+                row.className = 'grid grid-cols-12 p-4 hover:bg-gray-900 hover:bg-opacity-50 transition-colors';
+                row.innerHTML = `
+                    <div class="col-span-2 font-bold text-red-400">${token.id}</div>
+                    <div class="col-span-3">${token.client}</div>
+                    <div class="col-span-2">${token.issued}</div>
+                    <div class="col-span-2">${token.expires}</div>
+                    <div class="col-span-2 ${statusClass}">${statusText}</div>
+                    <div class="col-span-1 flex justify-end">
+                        <button class="text-blue-400 hover:text-blue-300 mr-2" title="Детали">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="text-red-400 hover:text-red-300" title="Отозвать">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(row);
+            });
+        }
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTokenRows();
+            
+            // Add flicker effect to random elements
+            const elements = document.querySelectorAll('h1, h2, .token-card');
+            elements.forEach(el => {
+                if (Math.random() > 0.7) {
+                    el.classList.add('flicker');
+                }
+            });
+            
+            // Update clock
+            function updateClock() {
+                const clockElements = document.querySelectorAll('.terminal-line:contains("Последнее обновление")');
+                if (clockElements.length > 0) {
+                    clockElements.forEach(el => {
+                        const text = el.textContent.split(':')[0];
+                        el.innerHTML = `${text}: <span class="text-blue-300">${new Date().toLocaleString()}</span>`;
+                    });
+                }
+            }
+            
+            setInterval(updateClock, 1000);
+        });
+    </script>
+    
+    <!-- Include language scripts -->
+    <script src="languages.js"></script>
+    <script src="language-switcher.js"></script>
+</body>
+</html>
